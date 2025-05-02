@@ -42,16 +42,9 @@ export async function POST(req: NextRequest) {
       { success: true, doctor: newDoctor },
       { status: 201 }
     );
-  } catch (err: any) {
-    console.error("Error saving doctor:", err);
+  } catch (err: unknown) {
     return NextResponse.json(
-      {
-        success: false,
-        message: err.message || "Error occurred",
-        errors: err.errors
-          ? Object.values(err.errors).map((e: any) => e.message)
-          : null,
-      },
+      { message: "Error fetching doctors", error: (err as Error).message },
       { status: 400 }
     );
   }

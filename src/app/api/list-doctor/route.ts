@@ -1,7 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
 import Doctor from "@/models/Doctor";
 import { dbConnect } from "@/lib/dbConnect";
+interface ExperienceCondition {
+  experience: { $lte?: number; $gt?: number };
+}
 
+interface FeeCondition {
+  fee: { $gte?: number; $gt?: number; $lte?: number };
+}
+
+interface ConsultModeCondition {
+  onlineFee?: { $exists: true; $gt: 0 };
+  visitFee?: { $exists: true; $gt: 0 };
+}
+type OrCondition = ExperienceCondition | FeeCondition | ConsultModeCondition;
+
+interface MongoQuery {
+  fee?: { $gte: number; $lte: number };
+  specialty?: { $regex: RegExp };
+  location?: { $regex: RegExp };
+  languages?: { $in: string[] };
+  $and?: Array<{ $or: OrCondition[] }>;
+}
 export async function GET(req: NextRequest) {
   await dbConnect();
 
@@ -9,7 +29,7 @@ export async function GET(req: NextRequest) {
 
   // Pagination
   const page = Number(searchParams.get("page") || 1);
-  const limit = Number(searchParams.get("limit") || 10);
+  const limit = Number(searchParams.get("limit") || 5);
 
   // Filter parameters
   const specialty = searchParams.get("specialty");
@@ -20,11 +40,10 @@ export async function GET(req: NextRequest) {
   // Array parameters (comma-separated)
   const experience = searchParams.get("experience")?.split(",") || [];
   const consultMode = searchParams.get("consultMode")?.split(",") || [];
-  const language = searchParams.get("language")?.split(",") || [];
   const feeRange = searchParams.get("feeRange")?.split(",") || [];
 
   // Build the query object
-  const query: any = {
+  const query: MongoQuery = {
     fee: { $gte: minFee, $lte: maxFee },
   };
 
@@ -58,7 +77,7 @@ export async function GET(req: NextRequest) {
 
   // Consult mode filter
   if (consultMode.length > 0) {
-    const consultConditions = [];
+    const consultConditions: ConsultModeCondition[] = [];
     if (consultMode.includes("online")) {
       consultConditions.push({ onlineFee: { $exists: true, $gt: 0 } });
     }
@@ -66,14 +85,8 @@ export async function GET(req: NextRequest) {
       consultConditions.push({ visitFee: { $exists: true, $gt: 0 } });
     }
     if (consultConditions.length > 0) {
-      if (!query.$and) query.$and = [];
-      query.$and.push({ $or: consultConditions });
+      query.$and = [...(query.$and || []), { $or: consultConditions }];
     }
-  }
-
-  // Language filter
-  if (language.length > 0) {
-    query.languages = { $in: language };
   }
 
   // Fee range filter
@@ -105,9 +118,9 @@ export async function GET(req: NextRequest) {
       page,
       limit,
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
     return NextResponse.json(
-      { message: "Error fetching doctors", error: err.message },
+      { message: "Error fetching doctors", error: (err as Error).message },
       { status: 500 }
     );
   }

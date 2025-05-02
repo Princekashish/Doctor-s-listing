@@ -2,7 +2,7 @@
 import { useState, useEffect, FormEvent } from "react";
 import axios from "axios";
 import Head from "next/head";
-import { ArrowDownToDot, ChevronDown, Info } from "lucide-react";
+import { ChevronDown, Info } from "lucide-react";
 
 interface Doctor {
   _id: string;
@@ -33,9 +33,8 @@ export default function DoctorConsultationPage() {
     visitFee: 0,
     qualifications: "",
   });
-  const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
-  const [limit] = useState(10);
+  const [limit] = useState(5);
   const [doctorspopup, setDoctorspopup] = useState(false);
   const [filters, setFilters] = useState({
     specialty: "",
@@ -75,13 +74,12 @@ export default function DoctorConsultationPage() {
       });
 
       setDoctors(response.data.doctors);
-      setTotal(response.data.total);
     } catch (error) {
       console.error('Error fetching doctors:', error);
     }
   };
 
-console.log("Doctors:", doctors);
+  console.log("Doctors:", doctors);
 
   console.log();
   const handleDoctor = () => {
@@ -453,6 +451,26 @@ console.log("Doctors:", doctors);
               </div>
             )}
           </div>
+          <div className="flex justify-around items-center mt-6">
+            <button
+              className={`bg-black text-white px-6 py-3 rounded-3xl flex justify-center items-center ${page === 1 ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+              onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+              disabled={page === 1}
+            >
+              Pre
+            </button>
+            <span className="text-gray-700 font-medium">Page {page}</span>
+            <button
+              className={`bg-black text-white px-6 py-3 rounded-3xl flex justify-center items-center ${doctors.length < limit ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+              onClick={() => setPage((prev) => prev + 1)}
+              disabled={doctors.length < limit}
+            >
+              Next
+            </button>
+          </div>
+
         </main>
 
         {doctorspopup && (

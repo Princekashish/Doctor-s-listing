@@ -1,36 +1,133 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Doctor Consultation Platform
+
+This is a **Doctor Consultation Platform** built using [Next.js](https://nextjs.org). The platform allows users to search for doctors, filter them based on various criteria, and add new doctor profiles to the system. It is designed to provide a seamless experience for both patients and administrators.
+
+## Features
+
+- **Doctor Listing**: View a list of doctors with their details such as name, specialty, experience, and fees.
+- **Filters**: Filter doctors based on specialty, location, experience, consultation mode (online or hospital), fees, and language.
+- **Add Doctor**: Add new doctor profiles to the system via a form.
+- **Dynamic Updates**: The page dynamically updates as you interact with filters or add new doctors.
+- **Responsive Design**: Fully responsive UI for desktop and mobile devices.
+
+## Technologies Used
+
+- **Frontend**: [Next.js](https://nextjs.org), React, Tailwind CSS
+- **Backend**: Next.js API Routes, MongoDB
+- **Database**: MongoDB (via Mongoose)
+- **HTTP Client**: Axios
 
 ## Getting Started
 
-First, run the development server:
+Follow these steps to set up and run the project locally:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### Prerequisites
+
+- Node.js (v16 or higher)
+- MongoDB (local or cloud instance)
+- Package manager: npm, yarn, or pnpm
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/Princekashish/Doctor-s-listing.git
+   cd Doctor-s-listing
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   ```
+
+3. Start the development server:
+
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   ```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser to see the app.
+
+## API Endpoints
+
+### Add Doctor
+
+- **Endpoint**: `/api/add-doctor`
+- **Method**: `POST`
+- **Request Body**:
+  ```json
+  {
+    "name": "Dr. John Doe",
+    "specialty": "General Physician",
+    "experience": 10,
+    "location": "New York",
+    "clinic": "Health Clinic",
+    "fee": 500,
+    "onlineFee": 400,
+    "visitFee": 600,
+    "qualifications": "MBBS, MD"
+  }
+  ```
+- **Response**:
+  - Success: `201 Created`
+  - Error: `400 Bad Request`
+
+## Folder Structure
+
+```
+.
+├── src
+│   ├── app
+│   │   ├── page.tsx          # Main page for doctor consultation
+│   │   ├── api
+│   │   │   └── add-doctor
+│   │   │       └── route.ts  # API route for adding doctors
+│   ├── models
+│   │   └── Doctor.ts         # Mongoose schema for Doctor
+│   ├── lib
+│   │   └── dbConnect.ts      # MongoDB connection utility
+├── public                    # Static assets
+├── styles                    # Global styles
+├── .env.local                # Environment variables
+└── README.md                 # Project documentation
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## How to Use
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Search for Doctors**:
+   - Use the filters on the left sidebar to narrow down your search.
+   - Doctors will be displayed dynamically based on the selected filters.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. **Add a Doctor**:
+   - Click the "Add Doctor" button.
+   - Fill in the required details in the popup form.
+   - Submit the form to add the doctor to the database.
 
-## Learn More
+3. **View Doctor Details**:
+   - Each doctor card displays their name, specialty, experience, and fees.
+   - Additional details like clinic and qualifications are also shown.
 
-To learn more about Next.js, take a look at the following resources:
+## Deployment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The easiest way to deploy this Next.js app is to use [Vercel](https://vercel.com). Follow these steps:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Push your code to a GitHub repository.
+2. Go to [Vercel](https://vercel.com) and import your project.
+3. Set up the environment variables in the Vercel dashboard.
+4. Deploy your app with a single click.
 
-## Deploy on Vercel
+## Acknowledgments
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [Next.js Documentation](https://nextjs.org/docs)
+- [MongoDB Documentation](https://www.mongodb.com/docs/)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
