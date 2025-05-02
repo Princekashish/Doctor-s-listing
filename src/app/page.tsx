@@ -66,7 +66,7 @@ export default function DoctorConsultationPage() {
         feeRange: filters.feeRange.join(','),
       };
 
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/list-doctor`, {
+      const response = await axios.get(`/api/list-doctor`, {
         params: query,
         paramsSerializer: {
           indexes: null // This prevents array indexes in params
@@ -164,7 +164,7 @@ export default function DoctorConsultationPage() {
     }
 
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/add-doctor`, doctordetails, {
+      const response = await axios.post(`/api/add-doctor`, doctordetails, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -202,9 +202,6 @@ export default function DoctorConsultationPage() {
     }
   };
 
-  if (!process.env.NEXT_PUBLIC_BASE_URL) {
-    return null;
-  }
 
   return (
     <>
