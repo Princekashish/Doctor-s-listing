@@ -17,8 +17,8 @@ type OrCondition = ExperienceCondition | FeeCondition | ConsultModeCondition;
 
 interface MongoQuery {
   fee?: { $gte: number; $lte: number };
-  specialty?: { $regex: RegExp };
-  location?: { $regex: RegExp };
+  // specialty?: { $regex: RegExp };
+  // location?: { $regex: RegExp };
   languages?: { $in: string[] };
   $and?: Array<{ $or: OrCondition[] }>;
 }
@@ -32,8 +32,8 @@ export async function GET(req: NextRequest) {
   const limit = Number(searchParams.get("limit") || 5);
 
   // Filter parameters
-  const specialty = searchParams.get("specialty");
-  const location = searchParams.get("location");
+  // const specialty = searchParams.get("specialty");
+  // const location = searchParams.get("location");
   const minFee = Number(searchParams.get("minFee") || 0);
   const maxFee = Number(searchParams.get("maxFee") || 1000000);
 
@@ -48,14 +48,14 @@ export async function GET(req: NextRequest) {
   };
 
   // Specialty filter
-  if (specialty) {
-    query.specialty = { $regex: new RegExp(specialty, "i") };
-  }
+  // if (specialty) {
+  //   query.specialty = { $regex: new RegExp(specialty, "i") };
+  // }
 
   // Location filter
-  if (location) {
-    query.location = { $regex: new RegExp(location, "i") };
-  }
+  // if (location) {
+  //   query.location = { $regex: new RegExp(location, "i") };
+  // }
 
   // Experience filter
   if (experience.length > 0) {

@@ -119,10 +119,10 @@ Follow these steps to set up and run the project locally:
 
 ## Deployment
 
-The easiest way to deploy this Next.js app is to use [Vercel](https://vercel.com). Follow these steps:
+The easiest way to deploy this Next.js app is to use [Vercel](https://doctor-s-listing-9o1a.vercel.app/). Follow these steps:
 
 1. Push your code to a GitHub repository.
-2. Go to [Vercel](https://vercel.com) and import your project.
+2. Go to [Vercel](https://doctor-s-listing-9o1a.vercel.app/) and import your project.
 3. Set up the environment variables in the Vercel dashboard.
 4. Deploy your app with a single click.
 
